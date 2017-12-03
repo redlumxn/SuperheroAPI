@@ -1,0 +1,23 @@
+[
+    {
+        "superheroName": "Batman",
+        "realName": "Bruce Wayne",
+        "city": "Gotham",
+        "aka": ["The Dark Knight", "The caped crusader"],
+        "publisher": "DC"
+    },
+    {
+        "superheroName": "Superman",
+        "realName": "Clark Kent",
+        "city": "Metropolis",
+        "aka": ["Man of Steel", "Man of Tomorrow"],
+        "publisher": "DC"
+    },
+    {
+        "superheroName": "Wolverine",
+        "realName": "James Howlett",
+        "city": "UNKNOWN",
+        "aka": ["Logan", "Weapon X"],
+        "publisher": "Marvel"
+    }
+]
