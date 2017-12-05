@@ -2,54 +2,60 @@
 This creates a Restful server that servers the SuperHeroes API
 """
 import json
-from flask import Flask, request
-from flask_restful import Resource, Api
-from flask_jsonpify import jsonify
-from flask import abort
+from flask import Flask, request, abort, jsonify
 
 app = Flask(__name__)
-api = Api(app)
 
-def readSuperheroes():
+def read_superheroes():
     """
     This function reads the content of the 'superheroes.json' and return it as a JSON obj
     """
-    f = open('./data/superheroes.json')
-    superheores = json.load(f)
-    f.close()
+    data = open('./data/superheroes.json')
+    superheores = json.load(data)
+    data.close()
     return superheores
 
-def searchSuperhero(name, superheroes):
+def search_superhero(name, superheroes):
     """
     This function search for the given superhero name in the given superhero list
     name: string rpresents the superhero name
     superheroes: list of JSON objects
     """
     try:
-        result = next(sh for sh in superheroes if sh['superheroName'].lower()==name.lower())
+        result = next(sh for sh in superheroes if sh['superheroName'].lower() == name.lower())
     except StopIteration:
-        abort(400,'Superhero not found in our database, try calling /api/v1/superheroes to get all of our registered heroes')
+        abort(404, 'Superhero not found in our database,' \
+                'try calling /api/v1/superheroes to get all of our registered heroes')
     return result
 
-class Superhero(Resource):
+@app.route('/api/v1/superhero/<superhero>', methods=['POST'])
+def add_superhero(superhero):
     """
-    Serves the /api/v1/superhero/<name> path
+    Serves the POST /api/v1/superhero/<name> path
     """
-    def get(self, name):
-        superheroes = readSuperheroes()
-        return searchSuperhero(name,superheroes)
+    content = request.json
+    print(content)
+    superheroes = read_superheroes()
+    superheroes.append(content)
+    data = open('./data/superheroes.json', 'w')
+    data.write(json.dumps(superheroes))
+    data.close()
+    return 'Superhero was registered in our database'
 
+@app.route('/api/v1/superhero/<name>', methods=['GET'])
+def get_superhero(name):
+    """
+    Serves the GET /api/v1/superhero/<name> path
+    """
+    superheroes = read_superheroes()
+    return jsonify(search_superhero(name, superheroes))
 
-class Superheroes(Resource):
+@app.route('/api/v1/superheroes', methods=['GET'])
+def get_all_superheroes():
     """
     Serves the /api/v1/superheroes path
     """
-    def get(self):
-        return readSuperheroes()
-
-api.add_resource(Superhero, '/api/v1/superhero/<name>') # get a specific hero        
-api.add_resource(Superheroes, '/api/v1/superheroes') # get all heroes
-
+    return jsonify(read_superheroes())
 
 if __name__ == '__main__':
-     app.run(host='0.0.0.0', port='5002')
+    app.run(host='0.0.0.0', port='5002')

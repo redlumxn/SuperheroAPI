@@ -19,5 +19,12 @@
         "city": "UNKNOWN",
         "aka": ["Logan", "Weapon X"],
         "publisher": "Marvel"
+    },
+    {                                                                                                                                                                     
+        "superheroName": "Aquaman",                                                                                                                                       
+        "realName": "Arthur Curry",                                                                                                                                       
+        "city": "Atlantis",                                                                                                                                               
+        "aka": ["King of Atlantis","Protector of the seven keys"],                                                                                                        
+        "publisher": "DC"                                                                                                                                                 
     }
 ]
